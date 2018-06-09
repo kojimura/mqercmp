@@ -1,13 +1,14 @@
 ## Name: mqercmp
 
 ### Function:
-Compress WMQ error log messages to make it easy to see.
+Compress WMQ error log messages for ease of reference.
 
 ### Usuage: mqercmp
 e.g. mqercmp < AMQERR01.LOG > err1.out
 
 ### Input data: WMQ error log
 Accept English and Japanese data format.
+
 #### 1. Date Time, Japanese short format 
 2014/12/06 09:13:29 - Process(1972.3) User(koji) Program(amqzmuc0.exe) 
 
