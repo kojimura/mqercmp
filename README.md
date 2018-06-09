@@ -49,6 +49,6 @@ Or if it is UTF-8 and LF on Windows, try:
 
 Author:   Kouji Murakami  
 Date:     2015/06/07  
-Modified: 2018/06/06  
+Modified: 2018/06/09  
 License:  
 [MIT]
