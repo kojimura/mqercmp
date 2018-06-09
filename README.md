@@ -3,7 +3,7 @@
 ### Function:
 Compress WMQ error log messages for ease of reference.
 
-### Usuage: mqercmp
+### Usage: mqercmp
 e.g. mqercmp < AMQERR01.LOG > err1.out
 
 ### Input data: WMQ error log
