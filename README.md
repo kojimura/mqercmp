@@ -1,13 +1,13 @@
 ## Name: mqercmp
 
 ### Function:
-Compress WMQ error log messages to make it easy to see
+Compress WMQ error log messages to make it easy to see.
 
 ### Usuage: mqercmp
 e.g. mqercmp < AMQERR01.LOG > err1.out
 
-### Input data: Accept English and Japanese data format 
-------------------------------------------------------
+### Input data: WMQ error log
+Accept English and Japanese data format.
 #### 1. Date Time, Japanese short format 
 2014/12/06 09:13:29 - Process(1972.3) User(koji) Program(amqzmuc0.exe) 
 
@@ -23,7 +23,6 @@ AMQ6209: An unexpected asynchronous signal (15 : SIGTERM) has been received and
 ignored.
 
 ### Output data: Simply one line for each error message log.  
------------------------------------------------------------
 2018/03/27 10:46:30 AMQ5026: The listener 'LISTENER.TCP' has started. ProcessId..  
 2018/03/31 07:28:09 AMQ6183: An internal WebSphere MQ error has occurred.  
 2018/03/31 07:28:09 AMQ6209: An unexpected asynchronous signal (15 : SIGTERM)..  
