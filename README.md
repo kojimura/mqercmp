@@ -35,15 +35,11 @@ gcc -o mqercmp mqercmp.c
 cl -MD mqercmp.c -Femqercmp.exe
 
 ### Note:
-The result depends on a charset of a platform in which the program was built.
-For instance, an input file might be UTF-8 with LR on Linx/UNIX, or SJIS with CRLF on Windows.
-Otherwise the program cannot convert a file properly.
-Use nkf or iconv for prepare proper charset of input file.
+The result depends on a charset of a platform in which the program was built. For instance, an input file might be UTF-8 with LR on Linx/UNIX, or SJIS with CRLF on Windows. Otherwise the program cannot convert a file properly. Use nkf or iconv for prepare proper charset of input file.
 
 ### Troubleshooting:
 Q. The program does not generate proper output.  
-A. Check your input file charset and new-line code.  
-For instance, if it is SJIS and CRLF on UNIX, try:  
+A. Check your input file charset and new-line code. For instance, if it is SJIS and CRLF on UNIX, try:  
  nkf -w -Lu AMQERR01.LOG(sjis) | mqercmp > er1.txt  
 Or if it is UTF-8 and LF on Windows, try:  
  nkf -u -Lw AMQERR01.LOG(utf8) | mqercmp > er1.txt  
@@ -51,5 +47,4 @@ Or if it is UTF-8 and LF on Windows, try:
 Author:   Kouji Murakami  
 Date:     2015/06/07  
 Modified: 2018/06/09  
-License:  
-[MIT]
+License:  [MIT] (mqercmp/LICENSE) 
