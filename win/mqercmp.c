@@ -7,37 +7,15 @@
 /* Usuage: mqercmp                                                            */
 /*  e.g.   mqercmp < AMQERR01.LOG > er1.out                                   */
 /*                                                                            */
-/* Input data:                                                                */
-/*  Accept English and Japanese data format                                   */
-/*  1. Date Time, Japanese short format                                       */
-/*   2014/12/06 09:13:29 -                                                    */
-/*  2. Date Time, Japanese long format                                        */
-/*   2014îN10åé07ì˙ 08éû03ï™07ïb -                                            */
-/*  3. Body, Japanese                                                         */
-/*   AMQnnnn: DBCS characters will end with "ÅB"                              */
-/*  4. Body, English                                                          */
-/*   AMQnnnn: SBCS characters will end with "."                               */
-/*                                                                            */
-/* Output data:                                                               */
-/*  2018/03/27 10:46:30 AMQ5026: The listener 'LISTENER.TCP' has started..    */
-/*  2018/03/31 07:28:09 AMQ6183: An internal WebSphere MQ error has occurred. */
-/*  2018/03/31 07:28:09 AMQ6209: An unexpected asynchronous signal..          */
-/*                                                                            */
-/* Note:                                                                      */
-/*  It depends on a charset of a platform in which the program was built.     */
-/*  e.g.) Input file might be UTF-8 with LR on Linx/UNIX, or SJIS with CRLF   */
-/*  on Windows. Otherwise the program cannot convert a file properly. Use nkf */
-/*  or iconv for preparing proper charset of input file, if necessary.        */ 
-/*                                                                            */
 /* Author:   Kouji Murakami                                                   */
 /* Date:     2015/06/07                                                       */
-/* Modified: 2018/05/23                                                       */
+/* Modified: 2018/06/11                                                       */
 /*                                                                            */
 /******************************************************************************/
 #define   DEBUG     0
 
 #define   IBUF_LEN  256   // input buffer length
-#define   OBUF_LEN  4096  // output buffer length
+#define   OBUF_LEN  1024  // output buffer length
 #define   DTIME_LEN 34    // Date time length. enough for Japanese long format
 
 #include  <stdio.h>
