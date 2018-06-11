@@ -20,7 +20,7 @@
 #define   DEBUG     0
 
 #define   IBUF_LEN  256   // input buffer length
-#define   OBUF_LEN  4096  // output buffer length
+#define   OBUF_LEN  2048  // output buffer length
 #define   DTIME_LEN 34    // Date time length. enough for Japanese long format
 
 #include  <stdio.h>
