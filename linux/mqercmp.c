@@ -28,7 +28,7 @@
 #include  <string.h>
 #include  <ctype.h>
 
-int moreline( FILE *fp, char *in, char *out );
+int moreline( FILE *fp, char *in, char *out, char *bx );
 
 int main( int argc, char **argv )
 {
@@ -44,7 +44,7 @@ int main( int argc, char **argv )
     } else if(!strncmp(ibuf, "AMQ", 3)){         // found a code AMQxxxx!
        if(DEBUG) printf("DBG.AMQ!\n");
        strcpy(++p, ibuf);                        // retrieve following sentence
-       moreline(stdin, ibuf, p);                 // get more lines, if exist
+       moreline(stdin, ibuf, p, obuf);           // get more lines, if exist
        if(DEBUG) printf("DBG.out*\n");
        printf("%s", obuf);                       // output buffer
     }
@@ -63,7 +63,7 @@ int main( int argc, char **argv )
 #define   TERM_JP    ("。\n")      // terminate character (Japanese)
 #define   TERM_JPW   ("。\r\n")    // terminate character (Japanese,Windows)
 
-int moreline( FILE *fp, char *in, char *out )
+int moreline( FILE *fp, char *in, char *out, char *bx )
 {
  char *p;
 
@@ -81,8 +81,12 @@ int moreline( FILE *fp, char *in, char *out )
  if(isalnum(*(p-1))) p++;              // spacing a word of alphabet or number
  fgets(in, IBUF_LEN-1, fp);            // fetch next line
  if(DEBUG) printf("DBG.in2* %s\n", in);
+ if(p - bx + strlen(in) > OBUF_LEN - 1){
+    printf("Error: too long sentence. wrong input. check encoding.\n");
+    return 1;
+ }
  strcpy(p, in);                        // append the line to tail
- moreline(fp, in, p);                  // check more lines
+ moreline(fp, in, p, bx);              // check more lines
 
  return 0;
 }
