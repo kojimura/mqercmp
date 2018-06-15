@@ -20,13 +20,15 @@
 #define   DEBUG     0
 
 #define   IBUF_LEN  256   // input buffer length
-#define   OBUF_LEN  2048  // output buffer length
+#define   OBUF_LEN  4096  // output buffer length
 #define   DTIME_LEN 34    // Date time length. enough for Japanese long format
 
 #include  <stdio.h>
 #include  <stdlib.h>
 #include  <string.h>
 #include  <ctype.h>
+
+int moreline( FILE *fp, char *in, char *out );
 
 int main( int argc, char **argv )
 {
@@ -61,7 +63,7 @@ int main( int argc, char **argv )
 #define   TERM_JP    ("。\n")      // terminate character (Japanese)
 #define   TERM_JPW   ("。\r\n")    // terminate character (Japanese,Windows)
 
-moreline( FILE *fp, char *in, char *out )
+int moreline( FILE *fp, char *in, char *out )
 {
  char *p;
 
