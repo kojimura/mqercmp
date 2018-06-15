@@ -3,6 +3,11 @@
 # Simplify all MQ error log files in spesified directory
 # usage: . amqercmp.sh /var/mqm/
 
+# for Mac OSX
+if [ "$(uname)" == 'Darwin' ]; then
+ export LC_CTYPE=C
+fi
+
 logPath=$1
 
 for fileName in `\find $logPath -name 'AMQERR0*.LOG'`; do
