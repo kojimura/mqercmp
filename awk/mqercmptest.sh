@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Simplify all MQ error files in spesified directory
-# usage: mqfdcawk.sh /var/mqm/errors/
+# usage: mqercmptest.sh /var/mqm/errors/
 
 #fPath=$1
 #for fname in ${fPath}*.LOG; do
