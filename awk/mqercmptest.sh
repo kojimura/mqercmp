@@ -1,45 +1,43 @@
-#!/bin/bash
+# Simplify MQ error message into one line.
+# usage: awk -f mqfdcawk.awk AMQERR01.LOG 
 
-# Simplify all MQ error files in spesified directory
-# usage: mqercmptest.sh /var/mqm/errors/
-
-#fPath=$1
-#for fname in ${fPath}*.LOG; do
- fname=$1
- echo "${fname}"
-# awk '{if($1 == /\d{2}.+?/){print $1 $2}}' < ${fname}
-#cat ${fname} | grep ^[12][0-9] | awk '{print $1 $2}' 
-#cat ${fname} | awk '($1 ~ /^[12][0-9]/) { print $1,$2 }' 
-#cat ${fname} | awk '{if($1~/^[12][0-9]/) printf "%s %s ",$1,$2; else if($1~/AMQ/) print $0}' 
-#cat ${fname} | awk '{if($1~/^[12][0-9]/){dt=$1; tm=$2;} else if($1~/AMQ/) printf "%s %s %s\n",$dt,$tm,$0}' 
-
-cat ${fname} | 
-awk '
-BEGIN { flg=0 }
+#cat ${fname} | 
+#awk '
+BEGIN { flag=0 }
 {
-# print "flg=" flg
- if($1~/^[12][0-9]/ && $2~/^[012]/){
-  if(flg==1) printf("\n")
+ if(($1~/^[0-9]/ && $2~/^[012][0-9]/)){
+  # date and time
+  if(flag==1) printf("\n")
   printf "%s %s ",$1,$2;
-  flg=1;
+  flag=1;
  } 
+ if($1~/^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/){
+  # date and time English, long, space separater
+  if(flag==1) printf("\n")
+  printf "%s %s %s %s ",$1,$2,$3,$4;
+  flag=1;
+ }
  else if($1~/AMQ/){
+  # error code
   printf $0 
   if($0~/[。.]$/){
-   flg=0
+   # message end in a line
+   flag=0
    printf("\n")
   }
   else{
-   flg=2
+   # message continue
+   flag=2
   }
  }
- else if(flg==2){
+ else if(flag==2){
+  # message continuing
   printf $0
   if($0~/[。.]$/){
-   flg=0
+   # message end after several lines
+   flag=0
    printf("\n")
   }
  }
-}' 
-
-#done
+}
+#' 
