@@ -1,4 +1,10 @@
+<#
+Simplify all MQ FDC files in spesified directory
+usage: .\mqercmp.ps1 C:\home\myprog\mqercmp\testdata
+Set-ExecutionPolicy RemoteSigned
+#>
 Param( $p1 )
+<#
 $f = Get-ChildItem $p1 -Filter *.LOG
 foreach ($i in $f){
  $flag=0;
@@ -6,7 +12,10 @@ foreach ($i in $f){
  $out=$i.Name.Split('.')[0]
  $out=$out.Substring($out.Length - 1,1)+".txt"
  echo $out
+ $i=$p1
  cat $i.FullName | %{
+#>
+ cat $p1 | %{
  if($_ -match "^(\d+)/(\d+)/(\d+)" -or $_ -match "^(\d+)年(\d+)月(\d+)日"){
    $date=$_.Split(' ')[0]
    $time=$_.Split(' ')[1]
@@ -31,4 +40,6 @@ foreach ($i in $f){
    }
   }
  }
+<#
 }
+#>
