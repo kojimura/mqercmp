@@ -11,7 +11,7 @@ BEGIN { flag=0 }
   printf "%s %s ",$1,$2;
   flag=1;
  } 
- if($1~/^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/){
+ else if($1~/^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)/){
   # date and time English, long, space separater
   if(flag==1) printf("\n")
   printf "%s %s %s %s ",$1,$2,$3,$4;
@@ -20,7 +20,7 @@ BEGIN { flag=0 }
  else if($1~/AMQ/){
   # error code
   printf $0 
-  if($0~/[。.]$/){
+  if($0~/[.。]$/){
    # message end in a line
    flag=0
    printf("\n")
@@ -33,7 +33,7 @@ BEGIN { flag=0 }
  else if(flag==2){
   # message continuing
   printf $0
-  if($0~/[。.]$/){
+  if($0~/[.。]$/){
    # message end after several lines
    flag=0
    printf("\n")
