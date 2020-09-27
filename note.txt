@@ -1,17 +1,15 @@
 --------------------------------------------------
+2020-9-26(土)
+
 ISSUE1. mqercmp 出力が途中で切れる
 環境 MQ9 Windows
 
-2020-9-26(土)
-
 テスト
-enzyme
-C:\\home\devel\mqercmp
+ローカルに同期
 #define DEBUG 1
 
 コンパイル
 win
-cd c:\home\devel\mqercmp\win
 cl -MD mqercmp.c -Femqercmp.exe
 
 linux
@@ -37,11 +35,12 @@ DBG.in* ローカルおよびターゲットのキュー・マネージャーの
 スペース AMQ番号 文言の終端(。)を取りに行くが、マッチしない。
 
 対処
-行頭が数字かどうかで判断しているが、ちゃんとチェックして日付でなければ読み飛ばす必要がある
-V9からメッセージが変更されて多くの情報が出るようになり今までにないパターンが現れる
+簡易に行頭が数字かどうかで判断しているが、ちゃんとチェックして非日付なら読み飛ばす必要がある
+V9からメッセージが変更され、多くの情報が出るようになり、今までにないパターンが現れるようになった
 チェック用関数作成 
 isDate という名前はあるようなので ismqdateにする
 parse は何が来るか決定不能なため scanf は使えない。数回stringスキャンする
+バッファオーバーフローに対処
 
 想定パターン
 2017年10月07日
@@ -53,7 +52,6 @@ October 14 2018
 Linux版も反映する
 
 --------------------------------------------------
-
 Note:
 The program will stop with segmentation fault when it read unexpected SJIS CRLF.
 workaround:
