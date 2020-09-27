@@ -1,5 +1,0 @@
-todo
-The program will stop with segmentation fault when it read unexpected SJIS CRLF.
-workaround:
-use nkf or tr + iconv
-to fix it, check null pointer, check CR(\r), for next version. maybe next week.
