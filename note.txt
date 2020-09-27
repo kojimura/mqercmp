@@ -10,8 +10,12 @@ C:\\home\devel\mqercmp
 #define DEBUG 1
 
 コンパイル
+win
 cd c:\home\devel\mqercmp\win
 cl -MD mqercmp.c -Femqercmp.exe
+
+linux
+gcc -o mqercmp mqercmp.c
 
 テストデータ読ませてみる
 .\mqercmp < AMQERR02.LOG
@@ -33,7 +37,8 @@ DBG.in* ローカルおよびターゲットのキュー・マネージャーの
 スペース AMQ番号 文言の終端(。)を取りに行くが、マッチしない。
 
 対処
-行頭が数字かどうかで判断しているが、ちゃんとチェックして日付でなければ読み飛ばさないと
+行頭が数字かどうかで判断しているが、ちゃんとチェックして日付でなければ読み飛ばす必要がある
+V9からメッセージが変更されて多くの情報が出るようになり今までにないパターンが現れる
 チェック用関数作成 
 isDate という名前はあるようなので ismqdateにする
 parse は何が来るか決定不能なため scanf は使えない。数回stringスキャンする

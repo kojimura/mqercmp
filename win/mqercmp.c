@@ -15,8 +15,8 @@
 /******************************************************************************/
 #define   DEBUG     0
 
-#define   IBUF_LEN  2048   // input buffer length
-#define   OBUF_LEN  4096   // output buffer length
+#define   IBUF_LEN  1024   // input buffer length
+#define   OBUF_LEN  1024   // output buffer length
 #define   DTIME_LEN 48     // Date time length. enough for Japanese long format
 
 #define   MQDATETIME_JP 1   // MQ Date-Time Japanese
@@ -46,7 +46,7 @@ int main( int argc, char **argv )
        if(!strncmp(ibuf, "AMQ", 3)){             // found a code AMQxxxx!
            if(DEBUG) printf("DBG.AMQ!\n");
            strcpy(++p, ibuf);                        // retrieve following sentence
-           moreline(stdin, ibuf, p);                 // get more lines, if exist
+           moreline(stdin, ibuf, p, obuf);                 // get more lines, if exist
            printf("%s", obuf);                       // output buffer
        } else {                                  // no Date-Time, no AMQxxxx
            continue;                             // ignore this line, get next
@@ -66,26 +66,6 @@ int main( int argc, char **argv )
           continue;                             // not Date & Time, ignore!
        }
     }
-   /*
-    if(sts){ 
-       if(DEBUG) printf("DBG.date(%c)\n", ibuf[0]);
-       strncpy(obuf, ibuf, DTIME_LEN);           // get Date & Time
-       p = strchr(obuf, ' ');                    // space between Date & Time
-       if(p){
-          p = strchr(++p, ' ');                 // second space following Time
-       }
-       else {
-          continue;                             // not Date & Time, ignore!
-       }
-
-    
-    } else if(!strncmp(ibuf, "AMQ", 3)){         // found a code AMQxxxx!
-       if(DEBUG) printf("DBG.AMQ!\n");
-       strcpy(++p, ibuf);                        // retrieve following sentence
-       moreline(stdin, ibuf, p);                 // get more lines, if exist
-       printf("%s", obuf);                       // output buffer
-    }
-    */
  }
  exit(0);                                        // normal end
 }
@@ -151,10 +131,11 @@ int ismqdate(char *s )
 #define   TERM_EN    (".\n")       // terminate character (English)
 #define   TERM_JP    ("B\n")      // terminate character (Japanese)
 
-moreline( FILE *fp, char *in, char *p )
+moreline( FILE *fp, char *in, char *p, char *sp )
 {
  if(DEBUG) printf("DBG.moreline(%c)in %s\n", *p, in);
 
+ if( p - sp > OBUF_LEN - 2) return 0; // trancate breking for avoid overflow */
  if(strstr(p, TERM_EN)) return 0;  // end of sentence
  if(strstr(p, TERM_JP)) return 0;
  p = strchr(p, '\n');              // find the end of line
@@ -162,7 +143,7 @@ moreline( FILE *fp, char *in, char *p )
  if(isalnum(*(p-1))) p++;          // spacing a word of alphabet or number
  fgets(in, IBUF_LEN-1, fp);        // fetch next line
  strcpy(p, in);                    // append the line to tail
- moreline(fp, in, p);              // check more lines
+ moreline(fp, in, p, sp);              // check more lines
  return 0;
 }
 
