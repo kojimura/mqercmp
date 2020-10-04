@@ -24,9 +24,9 @@
 #define   OBUF_LEN  1024   // output buffer length
 #define   DTIME_LEN 48     // Date time length. enough for Japanese long format
 
-#define   MQDATETIME_JP 1   // MQ Date-Time Japanese
-#define   MQDATETIME_EN 2   // MQ Date-Time English
-#define   MQDATETIME_NO 0   // MQ Date-Time Not Date-Time format
+#define   MQDATETIME_JP 1   // MQ DateTime Japanese
+#define   MQDATETIME_EN 2   // MQ DateTime English
+#define   MQDATETIME_NO 0   // MQ DateTime Not DateTime format
 
 #include  <stdio.h>
 #include  <stdlib.h>
@@ -39,6 +39,7 @@ int main( int argc, char **argv )
 {
  char *p, ibuf[IBUF_LEN], token[IBUF_LEN], obuf[OBUF_LEN];   // input buffer, output buffer
  int sts;
+ int flg = 0;              // MQ DateTime Flag
 
  p = &obuf[0];
  while(fgets(ibuf, IBUF_LEN-1, stdin)){
@@ -46,47 +47,35 @@ int main( int argc, char **argv )
 
     strncpy(token, ibuf, IBUF_LEN);              // copy to token for pursing
     if(DEBUG) printf("DBG.p(%c)obuf* %s\n", *p, obuf);
-    sts = ismqdate(token);                        // check if Date-Time
+    sts = ismqdate(token);                        // check if DateTime
     if(DEBUG) printf("DBG.ismqdate RC(%i)\n", sts);
 
-    if(sts == MQDATETIME_NO){                    // not Date & Time
-       if(!strncmp(ibuf, "AMQ", 3)){             // found a code AMQxxxx!
+    if(sts == MQDATETIME_NO){                    // not DateTime
+       if(!strncmp(ibuf, "AMQ", 3)){             // found an error AMQxxxx following DateTime!
            if(DEBUG) printf("DBG.AMQ!\n");
-           strcpy(++p, ibuf);                        // retrieve following sentence
-           moreline(stdin, ibuf, p, obuf);                 // get more lines, if exist
-           printf("%s", obuf);                       // output buffer
-       } else {                                  // no Date-Time, no AMQxxxx
+           strcpy(++p, ibuf);                    // retrieve following sentence
+           moreline(stdin, ibuf, p, obuf);       // get more lines, if exist
+           printf("%s", obuf);                   // output buffer
+           flg = 0;                              // clear flag
+       } else {                                  // no DateTime, no AMQxxxx
            continue;                             // ignore this line, get next
        }
-    } else {                        // Date-Time (1:Jp or 2:En)
+    } else {                                     // DateTime (1:Jp or 2:En)
        if(DEBUG) printf("DBG.date(%c)\n", ibuf[0]);
-       strncpy(obuf, ibuf, DTIME_LEN);           // copy Date-Time to outbuffer
+       flg = 1;                                  // DateTime Flag On!
+       strncpy(obuf, ibuf, DTIME_LEN);           // copy DateTime to outbuffer
        p = strchr(obuf, ' ');                    // first space between Date Time(JP)
        if(p){
           p = strchr(++p, ' ');                  // second space following Time(JP)
-          if(sts == MQDATETIME_EN){              // English Date Time
+          if(sts == MQDATETIME_EN){              // English DateTime
              p = strchr(++p, ' ');               // 3rd space(EN Jan 23 2020)
              p = strchr(++p, ' ');               // 4th space(EN Jan 23 2020 10:10)
           }
        }
        else {
-          continue;                             // not Date & Time, ignore!
+          continue;                             // not DateTime or collapsed, ignore!
        }
     }
-/*
-    if(isdigit(ibuf[0])){                        // should be Date & Time
-       if(DEBUG) printf("DBG.digit* %c\n", ibuf[0]);
-       strncpy(obuf, ibuf, DTIME_LEN);           // get Date & Time
-       p = strchr(obuf, ' ');                    // space between Date & Time
-       if(p) p = strchr(++p, ' ');               // second space following Time
-    } else if(!strncmp(ibuf, "AMQ", 3)){         // found a code AMQxxxx!
-       if(DEBUG) printf("DBG.AMQ!\n");
-       strcpy(++p, ibuf);                        // retrieve following sentence
-       moreline(stdin, ibuf, p, obuf);           // get more lines, if exist
-       if(DEBUG) printf("DBG.out*\n");
-       printf("%s", obuf);                       // output buffer
-    }
-*/
  }
  exit(0);                                        // normal end
 }
