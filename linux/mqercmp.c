@@ -33,6 +33,7 @@
 #include  <string.h>
 #include  <ctype.h>
 
+int ismqdate(char *s );
 int moreline( FILE *fp, char *in, char *out, char *bx );
 
 int main( int argc, char **argv )
